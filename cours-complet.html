@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دورة التصميم والطباعة ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #f472b6;
+  --rose-light: #fce7f3;
+  --rose-dark: #be185d;
+  --lilac: #c084fc;
+  --lilac-light: #f3e8ff;
+  --lilac-dark: #7e22ce;
+  --gold: #fbbf24;
+  --gold-light: #fef9c3;
+  --cream: #fff8f5;
+  --dark: #1e0a2e;
+  --text: #3b1f4e;
+  --muted: #9b7bb0;
+  --white: #ffffff;
+  --card-shadow: 0 8px 40px rgba(196,60,140,0.13);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  position: fixed;
+  top: 0; right: 0;
+  width: 300px;
+  height: 100vh;
+  background: var(--dark);
+  z-index: 100;
+  overflow-y: auto;
+  transform: translateX(0);
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar.hidden { transform: translateX(100%); }
+
+.sidebar-header {
+  padding: 28px 20px 16px;
+  background: linear-gradient(135deg, #2d0a4e, #1e0a2e);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--rose), var(--lilac));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 4px;
+}
+
+.sidebar-sub { color: rgba(255,255,255,.4); font-size: .78rem; }
+
+.sidebar-units { padding: 12px 0; flex: 1; }
+
+.unit-group { margin-bottom: 4px; }
+
+.unit-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: background .2s;
+  border-radius: 0;
+}
+
+.unit-label:hover { background: rgba(255,255,255,.06); }
+
+.unit-label.active-unit { background: rgba(244,114,182,.12); }
+
+.unit-num {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  color: white;
+  font-size: .75rem;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Cairo', sans-serif;
+}
+
+.unit-title { color: rgba(255,255,255,.75); font-size: .82rem; font-weight: 600; flex: 1; line-height: 1.4; }
+
+.unit-arrow {
+  color: rgba(255,255,255,.3);
+  font-size: .7rem;
+  transition: transform .2s;
+}
+
+.unit-group.open .unit-arrow { transform: rotate(90deg); }
+
+.lesson-list-sidebar {
+  display: none;
+  padding: 4px 0 4px 14px;
+}
+
+.unit-group.open .lesson-list-sidebar { display: block; }
+
+.lesson-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all .2s;
+  text-decoration: none;
+}
+
+.lesson-link:hover { background: rgba(255,255,255,.05); }
+
+.lesson-link.active {
+  background: linear-gradient(90deg, rgba(244,114,182,.2), transparent);
+  border-right: 3px solid var(--rose);
+}
+
+.lesson-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.2);
+  flex-shrink: 0;
+  transition: background .2s;
+}
+
+.lesson-link.done .lesson-dot { background: var(--gold); }
+.lesson-link.active .lesson-dot { background: var(--rose); }
+
+.lesson-name { color: rgba(255,255,255,.55); font-size: .78rem; line-height: 1.4; }
+.lesson-link.active .lesson-name { color: rgba(255,255,255,.9); font-weight: 600; }
+
+/* ── TOGGLE BTN ── */
+#toggle-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 200;
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(190,24,93,.4);
+  transition: all .2s;
+  color: white;
+  font-size: 1.1rem;
+}
+
+#toggle-btn:hover { transform: scale(1.08); }
+
+/* ── MAIN CONTENT ── */
+#main {
+  margin-right: 300px;
+  min-height: 100vh;
+  transition: margin-right .35s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  flex-direction: column;
+}
+
+#main.full { margin-right: 0; }
+
+/* ── TOP BAR ── */
+.topbar {
+  height: 64px;
+  background: white;
+  border-bottom: 1px solid #f0e0f0;
+  display: flex;
+  align-items: center;
+  padding: 0 28px 0 20px;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 12px rgba(196,60,140,.06);
+}
+
+.topbar-breadcrumb {
+  flex: 1;
+  font-size: .82rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.topbar-breadcrumb span { color: var(--rose-dark); font-weight: 700; }
+
+.progress-bar-wrap {
+  width: 120px;
+  height: 6px;
+  background: #f0e0f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--rose), var(--lilac));
+  border-radius: 10px;
+  transition: width .4s ease;
+}
+
+.progress-text { font-size: .75rem; color: var(--muted); white-space: nowrap; }
+
+/* ── LESSON CONTENT ── */
+.lesson-page {
+  display: none;
+  flex: 1;
+  padding: 40px 48px 40px 40px;
+  max-width: 820px;
+  width: 100%;
+  animation: fadeSlide .4s ease;
+}
+
+.lesson-page.active { display: block; }
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* lesson hero */
+.lesson-hero {
+  background: linear-gradient(135deg, var(--rose-light), var(--lilac-light));
+  border-radius: 24px;
+  padding: 36px 36px 32px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lesson-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30px; left: -30px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(244,114,182,.12);
+  pointer-events: none;
+}
+
+.lesson-unit-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  color: var(--rose-dark);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 10px rgba(190,24,93,.1);
+}
+
+.lesson-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 900;
+  color: var(--dark);
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.lesson-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.lesson-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .82rem;
+  color: var(--muted);
+}
+
+/* content blocks */
+.content-block { margin-bottom: 32px; }
+
+.block-title {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--dark);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.block-title::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, var(--rose-light), transparent);
+  border-radius: 2px;
+}
+
+.prose {
+  font-size: .97rem;
+  line-height: 1.95;
+  color: #4a2a5a;
+}
+
+.prose p { margin-bottom: 14px; }
+.prose strong { color: var(--rose-dark); font-weight: 700; }
+
+/* steps */
+.steps { display: flex; flex-direction: column; gap: 14px; }
+
+.step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: white;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 3px 15px rgba(196,60,140,.07);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.step:hover { transform: translateX(-4px); box-shadow: 0 6px 25px rgba(196,60,140,.13); }
+
+.step-num {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--rose), var(--lilac));
+  color: white;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-body h4 { font-weight: 700; color: var(--dark); margin-bottom: 4px; font-size: .95rem; }
+.step-body p { font-size: .88rem; color: var(--muted); line-height: 1.7; }
+
+/* tips */
+.tips { display: flex; flex-direction: column; gap: 10px; }
+
+.tip {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff8f5, #fdf4ff);
+  border-right: 3px solid var(--rose);
+  font-size: .9rem;
+  line-height: 1.7;
+  color: #5a2a6a;
+}
+
+.tip-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+/* warning box */
+.warning-box {
+  background: linear-gradient(135deg, #fef9c3, #fff8f5);
+  border: 1.5px solid var(--gold);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  font-size: .9rem;
+  line-height: 1.7;
+  color: #6b4a00;
+}
+
+/* info cards */
+.info-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+
+.info-card {
+  background: white;
+  border-radius: 18px;
+  padding: 22px 18px;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(196,60,140,.08);
+  transition: transform .2s;
+}
+
+.info-card:hover { transform: translateY(-4px); }
+.info-card .ic-icon { font-size: 2rem; margin-bottom: 10px; }
+.info-card h4 { font-weight: 800; font-size: .9rem; color: var(--dark); margin-bottom: 5px; }
+.info-card p { font-size: .8rem; color: var(--muted); line-height: 1.6; }
+
+/* checklist */
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(196,60,140,.05);
+  font-size: .9rem;
+  color: #4a2a5a;
+  line-height: 1.6;
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+}
+
+.check-item:hover { background: var(--rose-light); }
+
+.check-box {
+  width: 20px; height: 20px;
+  border-radius: 6px;
+  border: 2px solid #ddb0d0;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .7rem;
+  color: white;
+  transition: all .2s;
+  margin-top: 1px;
+}
+
+.check-item.checked .check-box {
+  background: linear-gradient(135deg, var(--rose), var(--lilac));
+  border-color: transparent;
+}
+
+.check-item.checked { text-decoration: line-through; color: var(--muted); }
+
+/* comparison table */
+.compare-table { width: 100%; border-collapse: collapse; border-radius: 16px; overflow: hidden; box-shadow: var(--card-shadow); }
+.compare-table th { background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark)); color: white; padding: 14px 16px; font-family: 'Cairo', sans-serif; font-weight: 700; font-size: .88rem; }
+.compare-table td { padding: 12px 16px; font-size: .87rem; border-bottom: 1px solid #f5e6f0; color: #4a2a5a; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:nth-child(even) td { background: #fdf5fc; }
+.compare-table .good { color: #15803d; font-weight: 700; }
+.compare-table .bad  { color: #b91c1c; font-weight: 700; }
+
+/* quiz */
+.quiz-block {
+  background: linear-gradient(135deg, var(--rose-light), var(--lilac-light));
+  border-radius: 20px;
+  padding: 28px;
+}
+
+.quiz-q { font-family: 'Cairo', sans-serif; font-weight: 800; font-size: 1rem; color: var(--dark); margin-bottom: 16px; }
+
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+
+.quiz-opt {
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-size: .9rem;
+  color: #4a2a5a;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quiz-opt:hover { border-color: var(--rose); background: var(--rose-light); }
+.quiz-opt.correct { border-color: #16a34a; background: #f0fdf4; color: #15803d; font-weight: 700; }
+.quiz-opt.wrong { border-color: #dc2626; background: #fef2f2; color: #b91c1c; }
+
+.quiz-feedback {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: .88rem;
+  font-weight: 600;
+  display: none;
+}
+
+.quiz-feedback.show { display: block; }
+.quiz-feedback.ok { background: #f0fdf4; color: #15803d; border: 1.5px solid #86efac; }
+.quiz-feedback.no { background: #fef2f2; color: #b91c1c; border: 1.5px solid #fca5a5; }
+
+/* ── NAV BUTTONS ── */
+.lesson-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0 50px;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 700;
+  font-size: .95rem;
+  transition: all .25s;
+}
+
+.nav-btn.prev {
+  background: white;
+  color: var(--rose-dark);
+  border: 2px solid #f0c0df;
+  box-shadow: 0 3px 12px rgba(190,24,93,.08);
+}
+
+.nav-btn.prev:hover { background: var(--rose-light); border-color: var(--rose); transform: translateX(4px); }
+
+.nav-btn.next {
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  color: white;
+  box-shadow: 0 6px 24px rgba(190,24,93,.35);
+}
+
+.nav-btn.next:hover { transform: translateX(-4px); box-shadow: 0 10px 30px rgba(190,24,93,.45); }
+
+.nav-btn:disabled { opacity: .35; pointer-events: none; }
+
+.mark-done-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 2px dashed #ddb0d0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 600;
+  font-size: .85rem;
+  transition: all .2s;
+}
+
+.mark-done-btn:hover, .mark-done-btn.done {
+  background: linear-gradient(135deg, var(--gold-light), #fff8f5);
+  border-color: var(--gold);
+  color: #92400e;
+}
+
+/* ── HOME PAGE ── */
+#home-page {
+  display: none;
+  flex: 1;
+  padding: 48px;
+}
+
+#home-page.active { display: block; }
+
+.home-hero {
+  background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 60%, #fef9c3 100%);
+  border-radius: 28px;
+  padding: 48px 44px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-hero::before {
+  content: '✨';
+  position: absolute;
+  font-size: 8rem;
+  right: -10px;
+  top: -10px;
+  opacity: .12;
+  pointer-events: none;
+}
+
+.home-hero h1 {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  color: var(--dark);
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+
+.home-hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.home-hero p { color: #6b3f7a; font-size: 1.05rem; line-height: 1.8; max-width: 560px; margin-bottom: 26px; }
+
+.start-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  color: white;
+  padding: 15px 36px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  box-shadow: 0 8px 28px rgba(190,24,93,.35);
+  transition: all .25s;
+}
+
+.start-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(190,24,93,.45); }
+
+.home-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 44px;
+}
+
+.home-stat {
+  background: white;
+  border-radius: 18px;
+  padding: 22px 18px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+}
+
+.home-stat-num {
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 900;
+  color: var(--rose-dark);
+}
+
+.home-stat-label { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+
+.units-overview { display: flex; flex-direction: column; gap: 14px; }
+.units-overview-title {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.unit-row {
+  background: white;
+  border-radius: 18px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 3px 14px rgba(196,60,140,.07);
+  cursor: pointer;
+  transition: all .25s;
+  border: 2px solid transparent;
+}
+
+.unit-row:hover { border-color: var(--rose); transform: translateX(-4px); }
+
+.unit-row-num {
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  color: white;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.unit-row-info { flex: 1; }
+.unit-row-info h3 { font-weight: 800; font-size: .97rem; color: var(--dark); margin-bottom: 3px; }
+.unit-row-info p { font-size: .8rem; color: var(--muted); }
+
+.unit-row-badge {
+  background: var(--rose-light);
+  color: var(--rose-dark);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* overlay */
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 90;
+}
+
+#overlay.show { display: block; }
+
+/* responsive */
+@media (max-width: 768px) {
+  #sidebar { width: 280px; }
+  #main { margin-right: 0; }
+  #toggle-btn { right: 12px; top: 12px; }
+  .lesson-page, #home-page { padding: 20px 16px 20px 16px; }
+  .home-hero { padding: 28px 20px; }
+  .topbar { padding: 0 60px 0 16px; }
+}
+
+/* ── CERTIFICATE MODAL ── */
+#cert-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,0,20,.75);
+  backdrop-filter: blur(6px);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#cert-modal.show { display: flex; }
+
+.cert-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 780px;
+  animation: certIn .5s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes certIn {
+  from { opacity:0; transform: scale(.85) translateY(30px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+
+/* Name input screen */
+#cert-name-screen {
+  background: white;
+  border-radius: 28px;
+  padding: 48px 40px;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(190,24,93,.35);
+}
+#cert-name-screen .ns-emoji { font-size: 4rem; margin-bottom: 16px; }
+#cert-name-screen h2 {
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+#cert-name-screen p { color: var(--muted); margin-bottom: 28px; font-size: 1rem; }
+#cert-name-input {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid #f0c0df;
+  border-radius: 14px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 1.1rem;
+  color: var(--dark);
+  text-align: center;
+  outline: none;
+  margin-bottom: 18px;
+  transition: border .2s;
+  background: var(--cream);
+}
+#cert-name-input:focus { border-color: var(--rose); }
+#cert-name-input::placeholder { color: #cba0c0; }
+.gen-cert-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  color: white;
+  padding: 15px 40px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  box-shadow: 0 8px 28px rgba(190,24,93,.35);
+  transition: all .25s;
+  width: 100%;
+  justify-content: center;
+}
+.gen-cert-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(190,24,93,.45); }
+
+/* Certificate itself */
+#cert-display { display: none; }
+
+.certificate {
+  position: relative;
+  width: 100%;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(190,24,93,.4);
+}
+
+/* decorative bg */
+.cert-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.cert-bg-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 12px;
+  background: linear-gradient(90deg, var(--rose-dark), var(--lilac-dark), var(--gold), var(--rose-dark));
+  background-size: 300% 100%;
+  animation: shimmer 3s linear infinite;
+}
+.cert-bg-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 12px;
+  background: linear-gradient(90deg, var(--gold), var(--rose-dark), var(--lilac-dark), var(--gold));
+  background-size: 300% 100%;
+  animation: shimmer 3s linear infinite reverse;
+}
+@keyframes shimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+.cert-bg-circle1 {
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249,168,201,.18), transparent);
+  top: -80px; right: -80px;
+}
+.cert-bg-circle2 {
+  position: absolute;
+  width: 250px; height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(192,132,252,.15), transparent);
+  bottom: -60px; left: -60px;
+}
+
+/* cert inner border */
+.cert-inner {
+  margin: 18px;
+  border: 2px solid transparent;
+  border-image: linear-gradient(135deg, var(--rose), var(--lilac), var(--gold), var(--rose)) 1;
+  border-radius: 14px;
+  padding: 40px 44px 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.cert-logo {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.cert-logo-text {
+  font-family: 'Cairo', sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+}
+
+.cert-decoration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.cert-line {
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--rose), transparent);
+}
+.cert-star { font-size: 1.4rem; }
+
+.cert-title {
+  text-align: center;
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  font-weight: 900;
+  color: var(--muted);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.cert-subtitle-line {
+  text-align: center;
+  font-size: .85rem;
+  color: #c0a0cc;
+  margin-bottom: 22px;
+  letter-spacing: 1px;
+}
+
+.cert-presented {
+  text-align: center;
+  font-size: .95rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.cert-name {
+  text-align: center;
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--rose-dark) 0%, var(--lilac-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 22px;
+  line-height: 1.2;
+}
+
+.cert-desc {
+  text-align: center;
+  font-size: .95rem;
+  color: #5a3a6a;
+  line-height: 1.9;
+  max-width: 540px;
+  margin: 0 auto 28px;
+}
+
+.cert-course-title {
+  text-align: center;
+  background: linear-gradient(135deg, var(--rose-light), var(--lilac-light));
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--dark);
+  margin-bottom: 28px;
+  display: inline-block;
+  width: 100%;
+}
+
+.cert-stats {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.cert-stat {
+  text-align: center;
+}
+.cert-stat-num {
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--rose-dark);
+}
+.cert-stat-label { font-size: .75rem; color: var(--muted); }
+
+.cert-divider {
+  width: 80px; height: 3px;
+  background: linear-gradient(90deg, var(--rose), var(--lilac));
+  border-radius: 10px;
+  margin: 0 auto 28px;
+}
+
+.cert-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.cert-seal {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  box-shadow: 0 6px 24px rgba(190,24,93,.35);
+  flex-shrink: 0;
+}
+
+.cert-sign {
+  text-align: center;
+  flex: 1;
+}
+.cert-sign-line {
+  width: 140px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--rose), transparent);
+  margin: 0 auto 6px;
+}
+.cert-sign-name {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: .9rem;
+  color: var(--dark);
+}
+.cert-sign-title { font-size: .75rem; color: var(--muted); }
+
+.cert-date {
+  text-align: left;
+  font-size: .8rem;
+  color: var(--muted);
+}
+
+.cert-badge-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.cert-badge {
+  background: white;
+  border: 1.5px solid var(--rose);
+  color: var(--rose-dark);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+/* cert action buttons */
+.cert-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.cert-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 700;
+  font-size: .9rem;
+  transition: all .25s;
+}
+
+.cert-action-btn.primary {
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  color: white;
+  box-shadow: 0 6px 20px rgba(190,24,93,.3);
+}
+.cert-action-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(190,24,93,.4); }
+
+.cert-action-btn.secondary {
+  background: white;
+  color: var(--rose-dark);
+  border: 2px solid var(--rose);
+}
+.cert-action-btn.secondary:hover { background: var(--rose-light); }
+
+/* confetti */
+.confetti-piece {
+  position: fixed;
+  width: 10px; height: 14px;
+  border-radius: 2px;
+  top: -20px;
+  animation: confettiFall linear forwards;
+  pointer-events: none;
+  z-index: 400;
+}
+@keyframes confettiFall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* completion banner on home */
+#completion-banner {
+  display: none;
+  background: linear-gradient(135deg, var(--rose-dark), var(--lilac-dark));
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(190,24,93,.35);
+  cursor: pointer;
+  transition: transform .25s;
+}
+#completion-banner:hover { transform: translateY(-3px); }
+#completion-banner h2 { font-family:'Cairo',sans-serif; font-size:1.5rem; font-weight:900; margin-bottom:6px; }
+#completion-banner p { opacity:.85; margin-bottom:14px; }
+#completion-banner .banner-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  background:white; color:var(--rose-dark);
+  padding:10px 28px; border-radius:12px;
+  font-family:'Cairo',sans-serif; font-weight:800; font-size:.95rem;
+  border:none; cursor:pointer; transition:all .2s;
+}
+#completion-banner .banner-btn:hover { background:var(--gold-light); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">✨ دورة سارة برينتس</div>
+    <div class="sidebar-sub">التصميم والطباعة المنزلية</div>
+  </div>
+  <div class="sidebar-units" id="sidebar-units"></div>
+</nav>
+
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<!-- TOGGLE -->
+<button id="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="topbar">
+    <div class="topbar-breadcrumb" id="topbar-bc">الرئيسية</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-text" id="prog-text">0 / 0</div>
+  </div>
+
+  <!-- HOME -->
+  <div id="home-page" class="active">
+    <div id="completion-banner" onclick="openCertModal()">
+      <h2>🎉 مبروك! أكملتِ الدورة كاملة!</h2>
+      <p>جميع الدروس مكتملة — شهادتك جاهزة للتحميل ✨</p>
+      <button class="banner-btn">🏆 احصلي على شهادتك الآن</button>
+    </div>
+    <div class="home-hero">
+      <h1>أهلاً بك في<br><em>دورة التصميم والطباعة المنزلية</em> 🌸</h1>
+      <p>تعلمي كل شيء من الصفر — التصميم بكانفا، الطباعة في المنزل، والبيع أونلاين مثل Sarah Prints</p>
+      <button class="start-btn" onclick="goToLesson(0)">ابدئي الدورة الآن 🚀</button>
+    </div>
+    <div class="home-stats">
+      <div class="home-stat"><div class="home-stat-num">١٠</div><div class="home-stat-label">وحدات تعليمية</div></div>
+      <div class="home-stat"><div class="home-stat-num">٥٦</div><div class="home-stat-label">درس متكامل</div></div>
+      <div class="home-stat"><div class="home-stat-num">١٢+</div><div class="home-stat-label">ساعة محتوى</div></div>
+      <div class="home-stat"><div class="home-stat-num">٦</div><div class="home-stat-label">منتجات ستتعلمينها</div></div>
+    </div>
+    <div class="units-overview-title">📚 محتوى الدورة</div>
+    <div class="units-overview" id="units-overview"></div>
+  </div>
+
+  <!-- LESSONS CONTAINER -->
+  <div id="lessons-container"></div>
+</div>
+
+<!-- ══ CERTIFICATE MODAL ══ -->
+<div id="cert-modal">
+  <div class="cert-wrap">
+
+    <!-- Step 1: enter name -->
+    <div id="cert-name-screen">
+      <div class="ns-emoji">🎓</div>
+      <h2>مبروك أكملتِ الدورة! 🎉</h2>
+      <p>اكتبي اسمك الكامل ليظهر على شهادتك الرسمية ✨</p>
+      <input id="cert-name-input" type="text" placeholder="مثال: سارة بن عمر" maxlength="40" />
+      <button class="gen-cert-btn" onclick="generateCertificate()">✨ أنشئي شهادتك الآن</button>
+    </div>
+
+    <!-- Step 2: certificate display -->
+    <div id="cert-display">
+      <div class="certificate" id="certificate-card">
+        <div class="cert-bg">
+          <div class="cert-bg-top"></div>
+          <div class="cert-bg-bottom"></div>
+          <div class="cert-bg-circle1"></div>
+          <div class="cert-bg-circle2"></div>
+        </div>
+        <div class="cert-inner">
+          <div class="cert-logo">
+            <div class="cert-logo-text">✨ SARAH PRINTS ACADEMY ✨</div>
+          </div>
+          <div class="cert-decoration">
+            <div class="cert-line"></div>
+            <div class="cert-star">🌸</div>
+            <div class="cert-star">⭐</div>
+            <div class="cert-star">🌸</div>
+            <div class="cert-line"></div>
+          </div>
+          <div class="cert-title">شهادة إتمام</div>
+          <div class="cert-subtitle-line">CERTIFICATE OF COMPLETION</div>
+          <div class="cert-presented">تُمنح هذه الشهادة إلى</div>
+          <div class="cert-name" id="cert-name-display">—</div>
+          <div class="cert-desc">
+            لإتمامها بنجاح جميع وحدات ودروس دورة التصميم والطباعة المنزلية —
+            وامتلاكها المعرفة والمهارة الكاملة لبناء مشروع تصميم وطباعة احترافي من المنزل.
+          </div>
+          <div class="cert-course-title">
+            🎨 دورة التصميم والطباعة المنزلية — من الصفر للاحتراف
+          </div>
+          <div class="cert-badge-row">
+            <span class="cert-badge">✓ كانفا احترافي</span>
+            <span class="cert-badge">✓ طباعة منزلية</span>
+            <span class="cert-badge">✓ بيع أونلاين</span>
+            <span class="cert-badge">✓ تسويق رقمي</span>
+          </div>
+          <div class="cert-stats">
+            <div class="cert-stat"><div class="cert-stat-num">٨</div><div class="cert-stat-label">وحدات مكتملة</div></div>
+            <div class="cert-stat"><div class="cert-stat-num" id="cert-lessons-count">١٦</div><div class="cert-stat-label">درس متكامل</div></div>
+            <div class="cert-stat"><div class="cert-stat-num">١٢+</div><div class="cert-stat-label">ساعة تعلّم</div></div>
+          </div>
+          <div class="cert-divider"></div>
+          <div class="cert-footer">
+            <div class="cert-seal">🏆</div>
+            <div class="cert-sign">
+              <div class="cert-sign-line"></div>
+              <div class="cert-sign-name">Sarah Prints Academy</div>
+              <div class="cert-sign-title">مديرة الدورة</div>
+            </div>
+            <div class="cert-date" id="cert-date-display"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="cert-actions">
+        <button class="cert-action-btn primary" onclick="printCertificate()">🖨️ طبعي الشهادة</button>
+        <button class="cert-action-btn secondary" onclick="closeCertModal()">✕ إغلاق</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  COURSE DATA
+// ══════════════════════════════════════════════
+const COURSE = [
+  {
+    unit: "مقدمة في مشروع التصميم والطباعة",
+    icon: "🌟",
+    badge: "مجاني",
+    lessons: [
+      {
+        title: "ما هو مشروع التصميم والطباعة المنزلية؟",
+        duration: "١٢ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">🌟 الوحدة الأولى</div>
+            <div class="lesson-title">ما هو مشروع التصميم والطباعة المنزلية؟</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٢ دقيقة</div>
+              <div class="lesson-meta-item">📖 درس نظري</div>
+              <div class="lesson-meta-item">🆓 مجاني</div>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="block-title">💡 الفكرة بشكل بسيط</div>
+            <div class="prose">
+              <p>مشروع التصميم والطباعة المنزلية هو أن تصممي منتجات رقمية (مفكرات، بطاقات عمل، ملصقات...) باستخدام برنامج <strong>كانفا</strong>، ثم تطبعيها في منزلك بطابعة عادية، وتبيعيها عبر الإنترنت.</p>
+              <p>الجميل في هذا المشروع أنك لا تحتاجين لمتجر فيزيائي، لا مستودع، ولا رأس مال ضخم. كل ما تحتاجينه هو <strong>موهبة التصميم + طابعة + اتصال إنترنت</strong>.</p>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="block-title">📊 كيف يعمل فعلياً؟</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>التصميم على كانفا</h4><p>تصممين منتجك (مفكرة، بطاقة عمل...) باستخدام كانفا المجاني أو Pro</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>الطباعة في المنزل</h4><p>تطبعين على ورق مناسب باستخدام طابعتك المنزلية وتقصين وتجمّعين</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>البيع أونلاين</h4><p>تبيعين عبر إنستغرام، تيليغرام، أو حتى منصات دولية مثل Etsy</p></div></div>
+              <div class="step"><div class="step-num">٤</div><div class="step-body"><h4>التوصيل للزبون</h4><p>تغلفين بشكل جميل وترسلين عبر شركات التوصيل لجميع الولايات</p></div></div>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="block-title">✨ لماذا هذا المشروع مثالي؟</div>
+            <div class="info-cards">
+              <div class="info-card"><div class="ic-icon">💸</div><h4>رأس مال صغير</h4><p>تبدأ من أقل من ٥٠٠٠ دج فقط</p></div>
+              <div class="info-card"><div class="ic-icon">🏠</div><h4>من البيت</h4><p>أنتِ الرئيسة، اعملي متى تريدين</p></div>
+              <div class="info-card"><div class="ic-icon">📈</div><h4>طلب دائم</h4><p>المفكرات والبطاقات مطلوبة طوال السنة</p></div>
+              <div class="info-card"><div class="ic-icon">🎨</div><h4>بدون خبرة مسبقة</h4><p>كانفا سهل، ستتعلمينه خطوة بخطوة</p></div>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="block-title">🧠 اختبري فهمك</div>
+            <div class="quiz-block" id="q0">
+              <div class="quiz-q">ما هو أول خطوة في مشروع التصميم والطباعة المنزلية؟</div>
+              <div class="quiz-options">
+                <div class="quiz-opt" onclick="checkQuiz('q0', this, false)">🛒 شراء متجر فيزيائي</div>
+                <div class="quiz-opt" onclick="checkQuiz('q0', this, true)">🎨 التصميم على كانفا</div>
+                <div class="quiz-opt" onclick="checkQuiz('q0', this, false)">📦 تأمين مستودع</div>
+              </div>
+              <div class="quiz-feedback" id="q0-fb"></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "قصة Sarah Prints — كيف بدأت؟",
+        duration: "١٠ دقائق",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">🌟 الوحدة الأولى</div>
+            <div class="lesson-title">قصة Sarah Prints — كيف بدأت من الصفر؟ 💪</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٠ دقائق</div>
+              <div class="lesson-meta-item">💡 إلهام وتحفيز</div>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="block-title">📖 القصة الحقيقية</div>
+            <div class="prose">
+              <p>Sarah Prints هو حساب إنستغرام جزائري من <strong>الأغواط</strong> يبيع مفكرات، بطاقات عمل، ملصقات ودفاتر مصممة بكانفا ومطبوعة في المنزل.</p>
+              <p>اليوم الحساب يملك <strong>٥٤٨١ متابع</strong> و<strong>٦٦٨ منشور</strong> وحقق <strong>٨٠٢.٨ ألف مشاهدة في ٣٠ يوم فقط!</strong> هذه أرقام حقيقية من شخص بدأ مثلك تماماً.</p>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="block-title">🔑 أسرار نجاحها</div>
+            <div class="tips">
+              <div class="tip"><div class="tip-icon">🎯</div><div>تخصصت في نيش محدد: <strong>التصميم المصغّر للمنزل والأعمال</strong> — لم تحاول تبيع كل شيء</div></div>
+              <div class="tip"><div class="tip-icon">📱</div><div>استخدمت <strong>إنستغرام + تيليغرام</strong> معاً — إنستغرام للظهور، تيليغرام للطلبات المباشرة</div></div>
+              <div class="tip"><div class="tip-icon">📦</div><div>التغليف الجميل جعل زبائنها يصورون ويشاركون — <strong>تسويق مجاني</strong> بمجهود الزبون</div></div>
+              <div class="tip"><div class="tip-icon">🚚</div><div>توصيل <strong>لجميع الولايات</strong> — لم تحدد نفسها بمنطقة واحدة وهذا ضاعف مبيعاتها</div></div>
+              <div class="tip"><div class="tip-icon">🔄</div><div><strong>الثبات في النشر</strong> — ٦٦٨ منشور يعني نشر منتظم لأكثر من سنة</div></div>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="block-title">💰 أرقام واقعية للربح</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>الشهر الأول</h4><p>٥ إلى ١٥ طلب — تتعلمين وتجربين وتبنين ثقة الزبائن</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>الشهر الثالث</h4><p>٢٠ إلى ٥٠ طلب شهرياً — الحساب بدأ ينمو ولديك زبائن دائمون</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>الشهر السادس</h4><p>٥٠ إلى ١٥٠+ طلب — مشروع حقيقي بدخل ثابت كل شهر</p></div></div>
+            </div>
+          </div>
+
+          <div class="warning-box">⚠️ <div><strong>انتبهي:</strong> هذه الأرقام تعتمد على جودة منتجك + انتظامك في النشر + خدمة الزبون. لا يوجد نجاح بين ليلة وضحاها، لكن مع الثبات النتائج مضمونة.</div></div>
+        `
+      },
+      {
+        title: "المنتجات الأكثر طلباً في السوق الجزائري",
+        duration: "٨ دقائق",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">🌟 الوحدة الأولى</div>
+            <div class="lesson-title">المنتجات الأكثر طلباً في السوق الجزائري 🔥</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ٨ دقائق</div>
+              <div class="lesson-meta-item">📊 بحث سوقي</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🏆 ترتيب المنتجات حسب الطلب</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>المفكرات (Planners) 🥇</h4><p>الأعلى مبيعاً على الإطلاق — يومي، أسبوعي، رمضاني، ميزانية، أم، طالبة</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>بطاقات العمل 🥈</h4><p>طلب دائم من أصحاب المشاريع، المعلمين، الأطباء، ميكاب آرتيست</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>التوزيعات والستيكرات 🥉</h4><p>طلب موسمي ضخم في الأعراس، المواليد، العيد، الدخول المدرسي</p></div></div>
+              <div class="step"><div class="step-num">٤</div><div class="step-body"><h4>الدفاتر المدرسية المخصصة</h4><p>أغلفة مصممة بالاسم — مطلوبة جداً في موسم الدخول المدرسي</p></div></div>
+              <div class="step"><div class="step-num">٥</div><div class="step-body"><h4>بطاقات الشكر والتغليف</h4><p>Thank you cards للمتاجر الأونلاين — سوق جديد ومتنامي</p></div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">📅 المواسم الذهبية</div>
+            <div class="info-cards">
+              <div class="info-card"><div class="ic-icon">🌙</div><h4>رمضان</h4><p>مفكرات رمضانية، بطاقات التهاني — أعلى مبيعات السنة</p></div>
+              <div class="info-card"><div class="ic-icon">📚</div><h4>الدخول المدرسي</h4><p>دفاتر، مفكرات الطالبة — سبتمبر = الموسم الأقوى</p></div>
+              <div class="info-card"><div class="ic-icon">💒</div><h4>موسم الأعراس</h4><p>توزيعات، بطاقات الدعوة، الديكور — ربيع وصيف</p></div>
+              <div class="info-card"><div class="ic-icon">🎉</div><h4>العيد والمناسبات</h4><p>هدايا، توزيعات، بطاقات — عيد الفطر والأضحى</p></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">✅ نصيحتي لك</div>
+            <div class="tips">
+              <div class="tip"><div class="tip-icon">💡</div><div>ابدئي <strong>بالمفكرات فقط</strong> — أتقنيها قبل أن تنتقلي لمنتج آخر. التخصص يبني الثقة ويزيد المبيعات.</div></div>
+              <div class="tip"><div class="tip-icon">📆</div><div>خططي للمواسم <strong>شهراً مسبقاً</strong> على الأقل — اللي يستعد مسبقاً يربح أكثر من اللي يتأخر.</div></div>
+            </div>
+          </div>
+        `
+      }
+    ]
+  },
+  {
+    unit: "إتقان كانفا من الصفر",
+    icon: "🎨",
+    badge: "أساسي",
+    lessons: [
+      {
+        title: "إنشاء حساب كانفا وإعداد مساحة العمل",
+        duration: "١٥ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">🎨 الوحدة الثانية</div>
+            <div class="lesson-title">إنشاء حساب كانفا وإعداد مساحة العمل 🖥️</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٥ دقيقة</div>
+              <div class="lesson-meta-item">🛠️ درس تطبيقي</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🚀 خطوات إنشاء الحساب</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>اذهبي لـ canva.com</h4><p>أو حملي تطبيق Canva من متجر التطبيقات على هاتفك</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>اختاري "Sign up for free"</h4><p>سجلي بحساب جوجل أو بريدك الإلكتروني — أسرع طريقة هي جوجل</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>اختاري "Personal use" أو "Small business"</h4><p>كلاهما يعطيك وصول للنسخة المجانية الكاملة</p></div></div>
+              <div class="step"><div class="step-num">٤</div><div class="step-body"><h4>اكتشفي الواجهة</h4><p>الشريط الجانبي، البحث عن القوالب، وزر "Create a design" الوردي</p></div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🆓 مجاني مقابل Pro — ما الفرق؟</div>
+            <table class="compare-table">
+              <tr><th>الميزة</th><th>مجاني ✓</th><th>Pro ⭐</th></tr>
+              <tr><td>القوالب الأساسية</td><td class="good">✓ آلاف القوالب</td><td class="good">✓ أكثر من ٦١٠ ألف قالب</td></tr>
+              <tr><td>إزالة خلفية الصورة</td><td class="bad">✗ غير متاح</td><td class="good">✓ بنقرة واحدة</td></tr>
+              <tr><td>Brand Kit (ألوان وخطوط ثابتة)</td><td class="bad">✗ واحد فقط</td><td class="good">✓ غير محدود</td></tr>
+              <tr><td>تخزين الملفات</td><td>٥ جيجا</td><td>١ تيرابايت</td></tr>
+              <tr><td>التصدير بدون علامة مائية</td><td class="good">✓ متاح</td><td class="good">✓ متاح</td></tr>
+              <tr><td>السعر</td><td class="good">مجاني</td><td>حوالي ١٣٠٠ دج/شهر</td></tr>
+            </table>
+          </div>
+          <div class="warning-box">💡 <div><strong>نصيحتي:</strong> ابدئي بالنسخة المجانية تماماً — ستصنعين منتجات رائعة بها. اشترئي Pro فقط بعد أن تبدأ المبيعات تغطي التكلفة.</div></div>
+          <div class="content-block">
+            <div class="block-title">✅ واجب هذا الدرس</div>
+            <div class="checklist">
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>سجّلت في كانفا بحسابي الخاص</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>استكشفت الصفحة الرئيسية وعرفت مكان البحث عن القوالب</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>فتحت تصميماً جديداً بحجم A4</span></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "أبعاد الطباعة الصحيحة لكل منتج",
+        duration: "١٢ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">🎨 الوحدة الثانية</div>
+            <div class="lesson-title">أبعاد الطباعة الصحيحة لكل منتج 📐</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٢ دقيقة</div>
+              <div class="lesson-meta-item">📏 درس تقني مهم</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">📏 جدول الأبعاد الأساسية</div>
+            <table class="compare-table">
+              <tr><th>المنتج</th><th>الحجم</th><th>في كانفا</th></tr>
+              <tr><td>مفكرة A5</td><td>١٤.٨ × ٢١ سم</td><td>Custom size: 14.8 × 21 cm</td></tr>
+              <tr><td>مفكرة A4</td><td>٢١ × ٢٩.٧ سم</td><td>A4 جاهز في كانفا</td></tr>
+              <tr><td>بطاقة عمل</td><td>٩ × ٥.٥ سم</td><td>Business Card جاهز</td></tr>
+              <tr><td>بطاقة شكر صغيرة</td><td>٩ × ٥.٥ سم</td><td>نفس البطاقة التجارية</td></tr>
+              <tr><td>ملصق مربع</td><td>١٠ × ١٠ سم</td><td>Custom: 10 × 10 cm</td></tr>
+              <tr><td>لوحة ديكور A3</td><td>٢٩.٧ × ٤٢ سم</td><td>A3 جاهز في كانفا</td></tr>
+            </table>
+          </div>
+          <div class="content-block">
+            <div class="block-title">⚠️ قاعدة الـ Bleed (حواف القطع)</div>
+            <div class="prose">
+              <p>الـ <strong>Bleed</strong> هي منطقة إضافية تضيفينها على حواف تصميمك (عادة ٣ ملم من كل جهة) لتضمني أن التصميم يصل لحافة الورقة بعد القطع بدون حدود بيضاء مزعجة.</p>
+            </div>
+            <div class="tips">
+              <div class="tip"><div class="tip-icon">✂️</div><div>عند إنشاء تصميم للطباعة، أضيفي <strong>٣ ملم</strong> لكل جهة من الأبعاد الأصلية. مثال: A5 تصبح 15.4 × 21.6 سم</div></div>
+              <div class="tip"><div class="tip-icon">🎨</div><div>اجعلي خلفية التصميم <strong>تمتد للحواف كلها</strong> — لا تتركي مساحة بيضاء في الأطراف</div></div>
+              <div class="tip"><div class="tip-icon">📝</div><div>النصوص المهمة يجب أن تكون على الأقل <strong>٥ ملم بعيداً</strong> عن الحافة لتجنب قطعها</div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🧠 اختبري فهمك</div>
+            <div class="quiz-block" id="q1">
+              <div class="quiz-q">ما هو الحجم الصحيح لبطاقة العمل؟</div>
+              <div class="quiz-options">
+                <div class="quiz-opt" onclick="checkQuiz('q1', this, false)">📄 A4 (21 × 29.7 سم)</div>
+                <div class="quiz-opt" onclick="checkQuiz('q1', this, true)">💼 9 × 5.5 سم</div>
+                <div class="quiz-opt" onclick="checkQuiz('q1', this, false)">📋 A5 (14.8 × 21 سم)</div>
+              </div>
+              <div class="quiz-feedback" id="q1-fb"></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "اختيار الألوان والخطوط العربية",
+        duration: "٢٠ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">🎨 الوحدة الثانية</div>
+            <div class="lesson-title">اختيار الألوان والخطوط العربية المميزة 🎨</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ٢٠ دقيقة</div>
+              <div class="lesson-meta-item">🎨 درس إبداعي</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🌈 قواعد اختيار الألوان للمنتجات البنات</div>
+            <div class="tips">
+              <div class="tip"><div class="tip-icon">🎯</div><div><strong>قاعدة ٦٠-٣٠-١٠:</strong> ٦٠٪ لون أساسي (خلفية) + ٣٠٪ لون ثانوي (عناصر) + ١٠٪ لون تأكيد (نصوص مميزة، تفاصيل)</div></div>
+              <div class="tip"><div class="tip-icon">💕</div><div><strong>التناسق:</strong> استخدمي ألوان من نفس العائلة — مثلاً وردي فاتح + وردي غامق + ذهبي = تصميم احترافي</div></div>
+              <div class="tip"><div class="tip-icon">🚫</div><div><strong>تجنبي:</strong> استخدام أكثر من ٣ ألوان في نفس التصميم — هذا يجعله يبدو فوضوياً وغير احترافي</div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🌸 باليتات ألوان جاهزة للاستخدام</div>
+            <div class="info-cards">
+              <div class="info-card"><div class="ic-icon">🌸</div><h4>باليت وردي أنثوي</h4><p>#F9A8C9 + #E05A8A + #FFF0F5 + #F4C842</p></div>
+              <div class="info-card"><div class="ic-icon">🌿</div><h4>باليت أخضر هادئ</h4><p>#A8D5B5 + #4A9B6F + #F5FFF8 + #D4AF7A</p></div>
+              <div class="info-card"><div class="ic-icon">💜</div><h4>باليت بنفسجي راقي</h4><p>#C084FC + #7E22CE + #F9F0FF + #F4C842</p></div>
+              <div class="info-card"><div class="ic-icon">☁️</div><h4>باليت أزرق هادئ</h4><p>#93C5FD + #2563EB + #EFF6FF + #F8D570</p></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">✍️ أفضل الخطوط العربية في كانفا</div>
+            <table class="compare-table">
+              <tr><th>الخط</th><th>مناسب لـ</th><th>الأسلوب</th></tr>
+              <tr><td><strong>Cairo</strong></td><td>العناوين الرئيسية</td><td>حديث، نظيف، قوي</td></tr>
+              <tr><td><strong>Tajawal</strong></td><td>النصوص الطويلة</td><td>هادئ، سهل القراءة</td></tr>
+              <tr><td><strong>Amiri</strong></td><td>العبارات الكلاسيكية</td><td>أنيق، تراثي</td></tr>
+              <tr><td><strong>Lalezar</strong></td><td>العناوين المميزة</td><td>جريء، فني</td></tr>
+              <tr><td><strong>Reem Kufi</strong></td><td>الشعارات البسيطة</td><td>هندسي، عصري</td></tr>
+            </table>
+          </div>
+          <div class="content-block">
+            <div class="block-title">✅ تطبيق عملي</div>
+            <div class="checklist">
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>اخترت باليت ألوان خاصة بمشروعي وحفظت الأكواد</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>جربت خطين عربيين مختلفين في تصميم واحد</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>أنشأت Brand Kit في كانفا بألواني وخطوطي المختارة</span></div>
+            </div>
+          </div>
+        `
+      }
+    ]
+  },
+  {
+    unit: "تصميم المفكرات — الأكثر مبيعاً",
+    icon: "📓",
+    badge: "🔥 مميز",
+    lessons: [
+      {
+        title: "أنواع المفكرات وما الأكثر طلباً",
+        duration: "١٠ دقائق",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">📓 الوحدة الثالثة</div>
+            <div class="lesson-title">أنواع المفكرات وما الأكثر طلباً 📊</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٠ دقائق</div>
+              <div class="lesson-meta-item">📊 بحث سوقي</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">📓 أنواع المفكرات حسب الطلب</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>المفكرة اليومية 🥇</h4><p>أعلى مبيعاً — مهام اليوم، مواعيد، أهداف يومية. الجمهور: طالبات وموظفات</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>مفكرة الميزانية 🥈</h4><p>مطلوبة جداً — تتبع الدخل والمصاريف. الجمهور: ربات المنازل وأصحاب المشاريع</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>المفكرة الرمضانية 🥉</h4><p>موسمية لكن مبيعات ضخمة — أذكار، ختمة، تتبع عادات</p></div></div>
+              <div class="step"><div class="step-num">٤</div><div class="step-body"><h4>مفكرة الأم</h4><p>متخصصة لمتابعة الأطفال، المواعيد الطبية، التطعيمات</p></div></div>
+              <div class="step"><div class="step-num">٥</div><div class="step-body"><h4>مفكرة الطالبة المدرسية</h4><p>جدول الدراسة، المواد، الواجبات — تُباع بالجملة قبل الدخول المدرسي</p></div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">💰 أسعار المفكرات في السوق الجزائري</div>
+            <table class="compare-table">
+              <tr><th>النوع</th><th>الحجم</th><th>عدد الصفحات</th><th>السعر المقترح</th></tr>
+              <tr><td>مفكرة صغيرة</td><td>A6</td><td>٣٢ صفحة</td><td>٢٥٠ — ٣٥٠ دج</td></tr>
+              <tr><td>مفكرة متوسطة</td><td>A5</td><td>٦٤ صفحة</td><td>٤٠٠ — ٦٠٠ دج</td></tr>
+              <tr><td>مفكرة كبيرة</td><td>A4</td><td>١٢٠ صفحة</td><td>٦٠٠ — ٩٠٠ دج</td></tr>
+              <tr><td>المفكرة الرمضانية</td><td>A5</td><td>٣٠ صفحة</td><td>٣٠٠ — ٥٠٠ دج</td></tr>
+            </table>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🧠 اختبري فهمك</div>
+            <div class="quiz-block" id="q2">
+              <div class="quiz-q">أي نوع من المفكرات هو الأعلى مبيعاً في السوق الجزائري؟</div>
+              <div class="quiz-options">
+                <div class="quiz-opt" onclick="checkQuiz('q2', this, false)">📅 المفكرة الشهرية</div>
+                <div class="quiz-opt" onclick="checkQuiz('q2', this, true)">📆 المفكرة اليومية</div>
+                <div class="quiz-opt" onclick="checkQuiz('q2', this, false)">💰 مفكرة الميزانية</div>
+              </div>
+              <div class="quiz-feedback" id="q2-fb"></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "تصميم غلاف المفكرة خطوة بخطوة",
+        duration: "٢٥ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">📓 الوحدة الثالثة</div>
+            <div class="lesson-title">تصميم غلاف المفكرة خطوة بخطوة 🎨</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ٢٥ دقيقة</div>
+              <div class="lesson-meta-item">🛠️ درس تطبيقي</div>
+              <div class="lesson-meta-item">⭐ الأهم</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🌟 عناصر الغلاف المثالي</div>
+            <div class="info-cards">
+              <div class="info-card"><div class="ic-icon">🖼️</div><h4>الخلفية</h4><p>صورة، نسيج، أو تدرج لوني جذاب ومتناسق</p></div>
+              <div class="info-card"><div class="ic-icon">✍️</div><h4>اسم المفكرة</h4><p>عنوان واضح وجميل يعبر عن محتواها</p></div>
+              <div class="info-card"><div class="ic-icon">🌸</div><h4>العناصر الزخرفية</div><p>أشكال، أيقونات، خطوط — بدون إفراط</p></div>
+              <div class="info-card"><div class="ic-icon">🏷️</div><h4>اسم علامتك</h4><p>ضعي اسم مشروعك بشكل خفيف في الزاوية</p></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">👆 خطوات تصميم الغلاف</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>افتحي كانفا وأنشئي مستند A5</h4><p>Custom size: 14.8 × 21 cm — هذا المقاس الأنسب للمفكرات</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>اختاري قالباً ملهماً</h4><p>ابحثي عن "Planner cover" أو "Journal cover" وغيري الألوان والخطوط فقط</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>طبقي Brand Kit بتاعتك</h4><p>غيري الألوان لألوانك المختارة والخط لخطك الأساسي</p></div></div>
+              <div class="step"><div class="step-num">٤</div><div class="step-body"><h4>أضيفي اسم المفكرة بخط مميز</h4><p>مثال: "مفكرتي اليومية ✨" أو "منظمتي الذهبية 🌟"</p></div></div>
+              <div class="step"><div class="step-num">٥</div><div class="step-body"><h4>أضيفي اسم مشروعك بشكل خفي</h4><p>في أسفل الغلاف بخط صغير وشفاف قليلاً — هذا يبني الهوية</p></div></div>
+              <div class="step"><div class="step-num">٦</div><div class="step-body"><h4>صدري بجودة عالية</h4><p>File → Download → PDF Print أو PNG 300 DPI</p></div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🚫 أخطاء شائعة في تصميم الغلاف</div>
+            <div class="tips">
+              <div class="tip"><div class="tip-icon">❌</div><div><strong>كثرة النصوص:</strong> الغلاف ليس مكاناً للشرح — اجعليه بسيطاً ومؤثراً بصرياً</div></div>
+              <div class="tip"><div class="tip-icon">❌</div><div><strong>خلط الخطوط:</strong> لا تستخدمي أكثر من خطين مختلفين في نفس التصميم</div></div>
+              <div class="tip"><div class="tip-icon">❌</div><div><strong>ألوان غير متناسقة:</strong> استخدمي دائماً باليت لون واحد محدد مسبقاً</div></div>
+              <div class="tip"><div class="tip-icon">❌</div><div><strong>صور منخفضة الجودة:</strong> الصور الضبابية تقتل مصداقية منتجك — استخدمي فقط صور HD</div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">✅ واجب هذا الدرس</div>
+            <div class="checklist">
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>صممت غلاف مفكرة A5 كاملة بألواني وخطي المختار</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>صدرت الغلاف بصيغة PDF Print بجودة عالية</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>أضفت اسم مشروعي على الغلاف</span></div>
+            </div>
+          </div>
+        `
+      }
+    ]
+  },
+  {
+    unit: "بطاقات العمل والهوية البصرية",
+    icon: "💼",
+    badge: "مهم",
+    lessons: [
+      {
+        title: "ما هي بطاقة العمل الناجحة؟",
+        duration: "١٢ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">💼 الوحدة الرابعة</div>
+            <div class="lesson-title">ما هي بطاقة العمل الناجحة؟ 💼</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٢ دقيقة</div>
+              <div class="lesson-meta-item">📖 نظري + تطبيقي</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">📌 المعلومات الضرورية في كل بطاقة عمل</div>
+            <div class="checklist">
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>الاسم الكامل أو اسم المشروع (بشكل واضح وكبير)</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>المسمى الوظيفي أو نشاط العمل (مثال: مصممة جرافيك / بائعة ملابس)</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>رقم الهاتف (الأساسي + واتساب إذا كان مختلفاً)</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>حساب إنستغرام أو تيليغرام</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>البريد الإلكتروني (اختياري للمهنيين)</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>الشعار (Logo) إذا وُجد</span></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🎨 تصميم الوجهين</div>
+            <div class="info-cards">
+              <div class="info-card"><div class="ic-icon">🔵</div><h4>الوجه الأمامي</h4><p>الشعار + الاسم + المسمى — بتصميم جذاب وجميل</p></div>
+              <div class="info-card"><div class="ic-icon">⚪</div><h4>الوجه الخلفي</h4><p>معلومات التواصل كاملة — يمكن أن يكون خلفية ملونة بسيطة</p></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">👥 أنواع الزبائن الذين يحتاجون بطاقات العمل</div>
+            <div class="tips">
+              <div class="tip"><div class="tip-icon">🏫</div><div><strong>المعلمون والمعلمات:</strong> اسم + مادة + مؤسسة + رقم — تصميم هادئ ومهني</div></div>
+              <div class="tip"><div class="tip-icon">💄</div><div><strong>ميكاب آرتيست وكوافيرات:</strong> يحبون التصميم الأنثوي الجميل والألوان اللافتة</div></div>
+              <div class="tip"><div class="tip-icon">👗</div><div><strong>أصحاب متاجر الملابس:</strong> بطاقة أنيقة تعكس ذوق المتجر — مهمة جداً</div></div>
+              <div class="tip"><div class="tip-icon">🏥</div><div><strong>الأطباء والمهنيون:</strong> تصميم نظيف وكلاسيكي، ألوان محايدة، خط واضح</div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">💰 تسعير خدمة بطاقات العمل</div>
+            <table class="compare-table">
+              <tr><th>الخدمة</th><th>السعر المقترح</th></tr>
+              <tr><td>تصميم فقط (PDF للزبون)</td><td>٨٠٠ — ١٥٠٠ دج</td></tr>
+              <tr><td>تصميم + طباعة ٥٠ بطاقة</td><td>١٥٠٠ — ٢٥٠٠ دج</td></tr>
+              <tr><td>تصميم + طباعة ١٠٠ بطاقة</td><td>٢٥٠٠ — ٤٠٠٠ دج</td></tr>
+              <tr><td>باقة الهوية الكاملة (بطاقة + شعار + ستوري)</td><td>٥٠٠٠ — ١٠٠٠٠ دج</td></tr>
+            </table>
+          </div>
+        `
+      }
+    ]
+  },
+  {
+    unit: "الطباعة المنزلية الاحترافية",
+    icon: "🖨️",
+    badge: "تقني",
+    lessons: [
+      {
+        title: "اختيار الطابعة المناسبة لمشروعك",
+        duration: "١٨ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">🖨️ الوحدة الخامسة</div>
+            <div class="lesson-title">اختيار الطابعة المناسبة لمشروعك 🖨️</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٨ دقيقة</div>
+              <div class="lesson-meta-item">💡 قرار مهم</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">⚖️ Inkjet مقابل Laser</div>
+            <table class="compare-table">
+              <tr><th>المعيار</th><th>Inkjet (حبر سائل)</th><th>Laser (حبر جاف)</th></tr>
+              <tr><td>جودة الألوان</td><td class="good">ممتازة للصور والتدرجات</td><td>جيدة للنصوص والتصاميم الصارمة</td></tr>
+              <tr><td>سرعة الطباعة</td><td class="bad">أبطأ</td><td class="good">أسرع</td></tr>
+              <tr><td>تكلفة الحبر</td><td class="bad">أغلى على المدى البعيد</td><td class="good">أرخص على المدى البعيد</td></tr>
+              <tr><td>سعر الطابعة</td><td class="good">أرخص (من ٣٠٠٠ دج)</td><td class="bad">أغلى (من ١٥٠٠٠ دج)</td></tr>
+              <tr><td>مناسبة لـ</td><td>مفكرات، صور، ألوان</td><td>بطاقات عمل، طباعة كثيفة</td></tr>
+            </table>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🏆 أفضل الطابعات للمبتدئات</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>Canon PIXMA G3420 (الأفضل للبداية)</h4><p>طابعة EcoTank — خزان حبر كبير، تكلفة طباعة منخفضة جداً، جودة عالية. السعر: ~١٥٠٠٠ دج</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>Epson EcoTank L3250</h4><p>نفس مزايا Canon مع واي فاي للطباعة من الهاتف. السعر: ~١٨٠٠٠ دج</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>HP DeskJet 2700 (للميزانية المحدودة)</h4><p>رخيصة للبداية لكن تكلفة الحبر أعلى. السعر: ~٦٠٠٠ دج</p></div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">📄 أنواع الورق للطباعة</div>
+            <div class="info-cards">
+              <div class="info-card"><div class="ic-icon">📄</div><h4>٨٠ جرام (عادي)</h4><p>للصفحات الداخلية للمفكرات — رخيص ومناسب</p></div>
+              <div class="info-card"><div class="ic-icon">📋</div><h4>١٢٠ جرام (مطفي)</h4><p>للأغلفة والمنتجات المميزة — إحساس راقٍ</p></div>
+              <div class="info-card"><div class="ic-icon">✨</div><h4>ورق لامع</h4><p>للصور والملصقات — الألوان تبدو أكثر حيوية</p></div>
+              <div class="info-card"><div class="ic-icon">🏷️</div><h4>ورق ستيكر</h4><p>للملصقات والتوزيعات اللاصقة</p></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🧠 اختبري فهمك</div>
+            <div class="quiz-block" id="q3">
+              <div class="quiz-q">أي طابعة الأفضل للمبتدئة في هذا المشروع؟</div>
+              <div class="quiz-options">
+                <div class="quiz-opt" onclick="checkQuiz('q3', this, false)">🖨️ HP DeskJet العادية لأنها أرخص شراءً</div>
+                <div class="quiz-opt" onclick="checkQuiz('q3', this, true)">🖨️ Canon PIXMA G3420 أو Epson EcoTank لأن تكلفة الطباعة أقل</div>
+                <div class="quiz-opt" onclick="checkQuiz('q3', this, false)">🖨️ طابعة Laser لأنها أسرع</div>
+              </div>
+              <div class="quiz-feedback" id="q3-fb"></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "إعدادات الطباعة الصحيحة وحساب التكاليف",
+        duration: "١٥ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">🖨️ الوحدة الخامسة</div>
+            <div class="lesson-title">إعدادات الطباعة وحساب التكاليف 💰</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٥ دقيقة</div>
+              <div class="lesson-meta-item">💰 درس مالي مهم</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">⚙️ إعدادات الطباعة الصحيحة</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>اختاري نوع الورق في الإعدادات</h4><p>Plain Paper للورق العادي، Photo Paper للورق اللامع — هذا يؤثر كثيراً على جودة الحبر</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>اختاري "Best" أو "High Quality"</h4><p>في خيار Print Quality — أبطأ لكن جودة أفضل بكثير لمنتجات البيع</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>حجم الورق = حجم ملفك</h4><p>إذا ملفك A5 اختاري A5 في إعدادات الطابعة — لا تتركيها "Fit to page"</p></div></div>
+              <div class="step"><div class="step-num">٤</div><div class="step-body"><h4>اطبعي صفحة تجريبية أولاً</h4><p>دائماً اطبعي صفحة واحدة أولاً للتأكد من الألوان والمقاسات قبل الطباعة الكاملة</p></div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🧮 كيف تحسبين تكلفة المنتج؟</div>
+            <div class="prose">
+              <p>معادلة بسيطة: <strong>تكلفة الورق + تكلفة الحبر + وقتك = التكلفة الإجمالية</strong></p>
+              <p>مثال عملي لمفكرة A5 من ٣٢ صفحة داخلية + غلاف:</p>
+            </div>
+            <table class="compare-table">
+              <tr><th>العنصر</th><th>التكلفة التقريبية</th></tr>
+              <tr><td>ورق داخلي (٣٢ ورقة ×٢ وجه = ١٦ ورقة)</td><td>~٣٠ دج</td></tr>
+              <tr><td>ورق الغلاف (ورقة ١٢٠ جرام)</td><td>~١٠ دج</td></tr>
+              <tr><td>تكلفة الحبر للطباعة الملونة</td><td>~٤٠ دج</td></tr>
+              <tr><td>مواد التجميد (دباسة / حلقات)</td><td>~٢٠ دج</td></tr>
+              <tr><td>التغليف (كيس شفاف + ربطة)</td><td>~١٥ دج</td></tr>
+              <tr><td><strong>الإجمالي</strong></td><td><strong>~١١٥ دج</strong></td></tr>
+            </table>
+            <div class="tips" style="margin-top:16px">
+              <div class="tip"><div class="tip-icon">💡</div><div>إذا بيعت بـ ٥٠٠ دج = ربح صافٍ ~٣٨٥ دج (هامش ربح ٧٧٪!) — هذا مشروع مربح جداً</div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">✅ واجب هذا الدرس</div>
+            <div class="checklist">
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>حسبت تكلفة أول منتج سأبيعه بالتفصيل</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>حددت سعر البيع مع هامش ربح مناسب (لا يقل عن ٥٠٪)</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>طبعت صفحة تجريبية وتأكدت من الجودة</span></div>
+            </div>
+          </div>
+        `
+      }
+    ]
+  },
+  {
+    unit: "البيع أونلاين — إنستغرام وتيليغرام",
+    icon: "📱",
+    badge: "تسويق",
+    lessons: [
+      {
+        title: "إنشاء حساب إنستغرام تجاري احترافي",
+        duration: "٢٠ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">📱 الوحدة السادسة</div>
+            <div class="lesson-title">إنشاء حساب إنستغرام تجاري احترافي 📸</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ٢٠ دقيقة</div>
+              <div class="lesson-meta-item">📱 تسويق رقمي</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">✅ عناصر الحساب المثالي</div>
+            <div class="checklist">
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>اسم مستخدم واضح ويعكس نشاطك — مثال: prints.dz أو sarahdesign.dz</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>صورة ملف شخصي: شعارك أو صورتك الشخصية بجودة عالية</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>Bio تشرح ما تبيعين في ٣ أسطر أو أقل</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>رابط تيليغرام أو واتساب في الـ Bio للطلبات</span></div>
+              <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>تحويل الحساب لـ "Professional Account" لرؤية الإحصائيات</span></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">✍️ Bio مثالي — مثال جاهز</div>
+            <div class="warning-box">📝 <div>
+              <strong>مثال:</strong><br>
+              🎨 تصميم وطباعة مصغّرة من المنزل<br>
+              📓 مفكرات • بطاقات عمل • ملصقات<br>
+              🚚 التوصيل لجميع الولايات 🇩🇿<br>
+              👇 الطلبات عبر تيليغرام
+            </div></div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">📸 تصوير المنتجات من الموبايل</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>الإضاءة الطبيعية هي الأفضل</h4><p>صوري بجانب نافذة في الصباح — الضوء الطبيعي مجاني ورائع</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>خلفية بيضاء أو نسيجية</h4><p>ورق أبيض كبير أو قماش كتاني — بسيط ويجعل المنتج هو النجم</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>زاوية الـ Flat lay (من الأعلى)</h4><p>ضعي المفكرة + قلم + فنجان قهوة + زهرة — صورة قصة كاملة</p></div></div>
+              <div class="step"><div class="step-num">٤</div><div class="step-body"><h4>استخدمي Lightroom Mobile مجاناً</h4><p>لتعديل الإضاءة والألوان — فلتر واحد ثابت لكل صورك يبني هوية بصرية</p></div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🧠 اختبري فهمك</div>
+            <div class="quiz-block" id="q4">
+              <div class="quiz-q">ما أفضل نوع إضاءة لتصوير المنتجات في المنزل؟</div>
+              <div class="quiz-options">
+                <div class="quiz-opt" onclick="checkQuiz('q4', this, false)">💡 مصباح LED قوي في السقف</div>
+                <div class="quiz-opt" onclick="checkQuiz('q4', this, true)">☀️ الضوء الطبيعي بجانب النافذة صباحاً</div>
+                <div class="quiz-opt" onclick="checkQuiz('q4', this, false)">🔦 فلاش الكاميرا المدمج</div>
+              </div>
+              <div class="quiz-feedback" id="q4-fb"></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "كتابة الكابشن التسويقي بالدارجة الجزائرية",
+        duration: "١٨ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">📱 الوحدة السادسة</div>
+            <div class="lesson-title">كتابة الكابشن التسويقي ✍️</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٨ دقيقة</div>
+              <div class="lesson-meta-item">✍️ كتابة إبداعية</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🎯 هيكل الكابشن المثالي</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>سطر الجذب (Hook)</h4><p>الجملة الأولى هي الأهم — يجب أن توقف المتابع عن التمرير فوراً</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>وصف المنتج بالعاطفة</h4><p>لا تقولي فقط "مفكرة A5" — قولي ما الذي ستشعر به الزبونة حين تمسكها</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>التفاصيل العملية</h4><p>الحجم، عدد الصفحات، المواد، السعر — معلومات واضحة ومباشرة</p></div></div>
+              <div class="step"><div class="step-num">٤</div><div class="step-body"><h4>الـ CTA (الدعوة للعمل)</h4><p>"راسلينا على تيليغرام" / "اكتبي طلبك في التعليقات" — دائماً وضحي الخطوة التالية</p></div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">💡 أمثلة كابشن جاهزة بالدارجة</div>
+            <div class="tips">
+              <div class="tip"><div class="tip-icon">📓</div><div><strong>للمفكرة:</strong> "مفكرتي الجديدة وصلت 😍✨ هذي السنة مانبقاوش نضيعوا وقتنا — مفكرة يومية A5، ٦٤ صفحة، تصميم حصري. السعر: ٥٠٠ دج + التوصيل. دري طلبك في التعليقات 💕"</div></div>
+              <div class="tip"><div class="tip-icon">💼</div><div><strong>لبطاقة العمل:</strong> "بطاقة عملك = أول انطباع عنك 💼 خليها تحكي عنك باحتراف ✨ بطاقات ١٠٠ قطعة بتصميم خاص بيك. واتساب للتواصل 👇"</div></div>
+              <div class="tip"><div class="tip-icon">🌙</div><div><strong>للمفكرة الرمضانية:</strong> "رمضان قرب 🌙 هذه السنة منظمة ومتأهلة معايا 💕 مفكرة رمضانية خاصة — ختمة + أذكار + يومياتي. طلبات محدودة ⚠️"</div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🏷️ الهاشتاق الصحيح</div>
+            <div class="prose">
+              <p>استخدمي مزيجاً من هاشتاقات <strong>كبيرة + متوسطة + صغيرة</strong> — الهاشتاقات الضخمة جداً تضيع فيها، والصغيرة جداً ما فيها أحد.</p>
+            </div>
+            <div class="tips">
+              <div class="tip"><div class="tip-icon">🇩🇿</div><div><strong>جزائرية:</strong> #مشاريع_جزائر #تصميم_جزائر #طباعة_جزائر #منتجات_جزائرية</div></div>
+              <div class="tip"><div class="tip-icon">📓</div><div><strong>منتج:</strong> #مفكرة #planner_arabic #بطاقات_عمل #تصميم_وطباعة</div></div>
+              <div class="tip"><div class="tip-icon">🎨</div><div><strong>كانفا:</strong> #تصميم_كانفا #canva_arabic #مصممة_جزائرية</div></div>
+            </div>
+          </div>
+        `
+      }
+    ]
+  },
+  {
+    unit: "التوصيل والشحن في الجزائر",
+    icon: "🚚",
+    badge: "لوجستيك",
+    lessons: [
+      {
+        title: "مقارنة شركات التوصيل الجزائرية",
+        duration: "١٥ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">🚚 الوحدة السابعة</div>
+            <div class="lesson-title">مقارنة شركات التوصيل الجزائرية 🚚</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٥ دقيقة</div>
+              <div class="lesson-meta-item">🇩🇿 خاص بالجزائر</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">📦 أشهر شركات التوصيل في الجزائر</div>
+            <table class="compare-table">
+              <tr><th>الشركة</th><th>التغطية</th><th>السعر التقريبي</th><th>المميزات</th></tr>
+              <tr><td><strong>Yalidine</strong></td><td>جميع الولايات</td><td>٤٠٠ — ٦٠٠ دج</td><td>الأشهر والأسرع، تتبع الطرد</td></tr>
+              <tr><td><strong>Zr Express</strong></td><td>معظم الولايات</td><td>٣٥٠ — ٥٥٠ دج</td><td>أرخص قليلاً، جيدة للطرود الصغيرة</td></tr>
+              <tr><td><strong>Maystro</strong></td><td>الولايات الكبرى</td><td>٣٠٠ — ٥٠٠ دج</td><td>مناسبة للطرود الخفيفة</td></tr>
+              <tr><td><strong>Procolis</strong></td><td>جميع الولايات</td><td>٤٥٠ — ٦٥٠ دج</td><td>منصة إدارة متكاملة</td></tr>
+            </table>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🎀 فن التغليف الجميل</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>ورق كرافت أو كيس شفاف</h4><p>لف المفكرة بورق كرافت ثم ضعيها في كيس شفاف — احترافي وجميل</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>ربطة تتشيتا أو شريط ملون</h4><p>لمسة بسيطة تجعل فتح الطرد تجربة سعيدة للزبون</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>بطاقة شكر مطبوعة</h4><p>"شكراً لثقتك 💕 اسمك + رقم تيليغرام" — هذا يشجع على إعادة الطلب</p></div></div>
+              <div class="step"><div class="step-num">٤</div><div class="step-body"><h4>كرتون حماية خارجي</h4><p>لمنع التلف أثناء الشحن — الزبون يرى أنك تهتمين بمنتجك</p></div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">💡 نصائح لتجنب مشاكل التوصيل</div>
+            <div class="tips">
+              <div class="tip"><div class="tip-icon">📞</div><div>اتصلي بالزبون قبل الإرسال للتأكد من عنوانه — هذا يقلل المرتجعات بشكل كبير</div></div>
+              <div class="tip"><div class="tip-icon">📸</div><div>صوري الطرد قبل الإرسال كدليل — إذا وصل تالفاً عندك دليل</div></div>
+              <div class="tip"><div class="tip-icon">💰</div><div>الدفع عند الاستلام (COD) يزيد المبيعات لكن ارفعي السعر قليلاً لتغطية المرتجعات المحتملة</div></div>
+            </div>
+          </div>
+        `
+      }
+    ]
+  },
+  {
+    unit: "الجانب المالي وتطوير المشروع",
+    icon: "💰",
+    badge: "متقدم",
+    lessons: [
+      {
+        title: "تتبع الدخل والمصروفات",
+        duration: "١٥ دقيقة",
+        content: `
+          <div class="lesson-hero">
+            <div class="lesson-unit-tag">💰 الوحدة الثامنة</div>
+            <div class="lesson-title">تتبع الدخل والمصروفات 📊</div>
+            <div class="lesson-meta">
+              <div class="lesson-meta-item">⏱️ ١٥ دقيقة</div>
+              <div class="lesson-meta-item">💰 إدارة مالية</div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">📊 جدول تتبع بسيط للمبتدئة</div>
+            <div class="prose">
+              <p>لا تحتاجين لبرنامج معقد — جدول Google Sheets بسيط يكفي تماماً في البداية.</p>
+            </div>
+            <table class="compare-table">
+              <tr><th>العمود</th><th>ما تكتبين فيه</th></tr>
+              <tr><td>التاريخ</td><td>تاريخ الطلب أو المصروف</td></tr>
+              <tr><td>اسم الزبون</td><td>لمتابعة الطلبات المتكررة</td></tr>
+              <tr><td>المنتج</td><td>نوع المنتج والكمية</td></tr>
+              <tr><td>سعر البيع</td><td>ما دفعه الزبون</td></tr>
+              <tr><td>تكلفة الإنتاج</td><td>ورق + حبر + مواد</td></tr>
+              <tr><td>تكلفة التوصيل</td><td>رسوم شركة الشحن</td></tr>
+              <tr><td>الربح الصافي</td><td>البيع — (الإنتاج + التوصيل)</td></tr>
+            </table>
+          </div>
+          <div class="content-block">
+            <div class="block-title">📈 خطة الأشهر الستة الأولى</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">١</div><div class="step-body"><h4>الشهر الأول: التعلم والإطلاق</h4><p>صممي ٣ منتجات، انشري يومياً، ابدئي بالمحيطين. الهدف: ٥ — ١٠ طلبات</p></div></div>
+              <div class="step"><div class="step-num">٢</div><div class="step-body"><h4>الشهر الثاني والثالث: البناء</h4><p>وسعي المنتجات، ابدئي الريلز، اطلبي تقييمات. الهدف: ٢٠ — ٤٠ طلب/شهر</p></div></div>
+              <div class="step"><div class="step-num">٣</div><div class="step-body"><h4>الشهر الرابع والخامس: النمو</h4><p>حزم عروض، زبائن دائمون، تيليغرام نشط. الهدف: ٥٠ — ٨٠ طلب/شهر</p></div></div>
+              <div class="step"><div class="step-num">٤</div><div class="step-body"><h4>الشهر السادس: الاحتراف</h4><p>مشروع حقيقي ومعروف، دخل ثابت كل شهر. الهدف: ١٠٠+ طلب/شهر</p></div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🌟 متى توسعين مشروعك؟</div>
+            <div class="tips">
+              <div class="tip"><div class="tip-icon">🖨️</div><div>اشترئي طابعة أفضل عندما يتجاوز دخلك الشهري <strong>٢٠٠٠٠ دج</strong> — الاستثمار يُسدّد نفسه</div></div>
+              <div class="tip"><div class="tip-icon">🛒</div><div>أضيفي منتجاً جديداً فقط بعد أن تتقني المنتجات الموجودة — لا تشتتي نفسك</div></div>
+              <div class="tip"><div class="tip-icon">👩‍💼</div><div>عندما تصلي لـ ١٠٠ طلب/شهر فكري في توظيف مساعدة للتغليف والتوصيل</div></div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="block-title">🎉 تهانيّ! أكملتِ الدورة</div>
+            <div class="warning-box">🌸 <div><strong>أنتِ الآن جاهزة!</strong> لديك كل المعرفة التي تحتاجينها لبدء مشروعك. الخطوة التالية هي البدء فوراً — لا تنتظري الوقت المثالي، ابدئي اليوم ✨</div></div>
+          </div>
+        `
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+//  BUILD APP
+// ══════════════════════════════════════════════
+
+let allLessons = [];
+let currentIdx = -1;
+const doneSet = new Set(JSON.parse(localStorage.getItem('doneLessons') || '[]'));
+
+// Flatten lessons
+COURSE.forEach((unit, ui) => {
+  unit.lessons.forEach((lesson, li) => {
+    allLessons.push({ ...lesson, unitIndex: ui, lessonIndex: li, unitTitle: unit.unit, unitIcon: unit.icon });
+  });
+});
+
+function saveDone() {
+  localStorage.setItem('doneLessons', JSON.stringify([...doneSet]));
+}
+
+function updateProgress() {
+  const total = allLessons.length;
+  const done = doneSet.size;
+  document.getElementById('prog-fill').style.width = (done / total * 100) + '%';
+  document.getElementById('prog-text').textContent = done + ' / ' + total;
+}
+
+// Build sidebar
+function buildSidebar() {
+  const container = document.getElementById('sidebar-units');
+  let globalIdx = 0;
+  COURSE.forEach((unit, ui) => {
+    const group = document.createElement('div');
+    group.className = 'unit-group';
+    group.innerHTML = `
+      <div class="unit-label" onclick="toggleUnit(this.parentElement, ${ui})">
+        <div class="unit-num">${ui + 1}</div>
+        <div class="unit-title">${unit.unit}</div>
+        <div class="unit-arrow">›</div>
+      </div>
+      <div class="lesson-list-sidebar"></div>
+    `;
+    const ll = group.querySelector('.lesson-list-sidebar');
+    unit.lessons.forEach((lesson, li) => {
+      const idx = globalIdx++;
+      const a = document.createElement('div');
+      a.className = 'lesson-link' + (doneSet.has(idx) ? ' done' : '');
+      a.dataset.idx = idx;
+      a.innerHTML = `<div class="lesson-dot"></div><div class="lesson-name">${lesson.title}</div>`;
+      a.onclick = () => goToLesson(idx);
+      ll.appendChild(a);
+    });
+    container.appendChild(group);
+  });
+}
+
+function toggleUnit(group, ui) {
+  group.classList.toggle('open');
+}
+
+// Build home overview
+function buildHomeOverview() {
+  const ov = document.getElementById('units-overview');
+  let globalIdx = 0;
+  COURSE.forEach((unit, ui) => {
+    const startIdx = globalIdx;
+    globalIdx += unit.lessons.length;
+    const row = document.createElement('div');
+    row.className = 'unit-row';
+    row.innerHTML = `
+      <div class="unit-row-num">${ui + 1}</div>
+      <div class="unit-row-info">
+        <h3>${unit.icon} ${unit.unit}</h3>
+        <p>${unit.lessons.length} درس</p>
+      </div>
+      <div class="unit-row-badge">${unit.badge}</div>
+    `;
+    row.onclick = () => goToLesson(startIdx);
+    ov.appendChild(row);
+  });
+}
+
+// Build lesson pages
+function buildLessons() {
+  const container = document.getElementById('lessons-container');
+  allLessons.forEach((lesson, idx) => {
+    const page = document.createElement('div');
+    page.className = 'lesson-page';
+    page.id = 'lesson-' + idx;
+    page.innerHTML = lesson.content + buildNav(idx);
+    container.appendChild(page);
+  });
+}
+
+function buildNav(idx) {
+  const hasPrev = idx > 0;
+  const hasNext = idx < allLessons.length - 1;
+  const isDone = doneSet.has(idx);
+  return `
+    <div class="lesson-nav">
+      <button class="nav-btn prev" onclick="goToLesson(${idx - 1})" ${!hasPrev ? 'disabled' : ''}>
+        › الدرس السابق
+      </button>
+      <button class="mark-done-btn ${isDone ? 'done' : ''}" id="done-btn-${idx}" onclick="markDone(${idx})">
+        ${isDone ? '✓ تم الإنجاز' : '○ سجّلي كمنجز'}
+      </button>
+      <button class="nav-btn next" onclick="goToLesson(${idx + 1})" ${!hasNext ? 'disabled' : ''}>
+        ${hasNext ? 'الدرس التالي ›' : '🎉 إنهاء الدورة'}
+      </button>
+    </div>
+  `;
+}
+
+function goToLesson(idx) {
+  // hide home
+  document.getElementById('home-page').classList.remove('active');
+  // hide all
+  document.querySelectorAll('.lesson-page').forEach(p => p.classList.remove('active'));
+  // show target
+  const page = document.getElementById('lesson-' + idx);
+  if (!page) return;
+  page.classList.add('active');
+  currentIdx = idx;
+
+  // update topbar
+  const lesson = allLessons[idx];
+  document.getElementById('topbar-bc').innerHTML = `
+    <span onclick="showHome()" style="cursor:pointer">الرئيسية</span>
+     › ${lesson.unitIcon} ${lesson.unitTitle} › ${lesson.title}
+  `;
+
+  // update sidebar active
+  document.querySelectorAll('.lesson-link').forEach(a => a.classList.remove('active'));
+  const activeLink = document.querySelector(`.lesson-link[data-idx="${idx}"]`);
+  if (activeLink) {
+    activeLink.classList.add('active');
+    // open parent unit
+    const group = activeLink.closest('.unit-group');
+    if (group) group.classList.add('open');
+  }
+
+  updateProgress();
+  window.scrollTo(0, 0);
+  closeSidebar();
+}
+
+function showHome() {
+  document.querySelectorAll('.lesson-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('home-page').classList.add('active');
+  document.getElementById('topbar-bc').innerHTML = 'الرئيسية';
+  currentIdx = -1;
+}
+
+// Quiz
+function checkQuiz(id, el, isCorrect) {
+  const block = document.getElementById(id);
+  const opts = block.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  const fb = document.getElementById(id + '-fb');
+  if (isCorrect) {
+    el.classList.add('correct');
+    fb.className = 'quiz-feedback show ok';
+    fb.textContent = '✓ إجابة صحيحة! ممتاز 🌟';
+  } else {
+    el.classList.add('wrong');
+    fb.className = 'quiz-feedback show no';
+    fb.textContent = '✗ إجابة خاطئة، راجعي الدرس مرة أخرى.';
+  }
+}
+
+// Checklist
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+}
+
+// Sidebar toggle
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const main = document.getElementById('main');
+  const ov = document.getElementById('overlay');
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    sb.classList.toggle('hidden');
+    ov.classList.toggle('show', !sb.classList.contains('hidden'));
+  } else {
+    sb.classList.toggle('hidden');
+    main.classList.toggle('full', sb.classList.contains('hidden'));
+  }
+}
+
+function closeSidebar() {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.add('hidden');
+    document.getElementById('overlay').classList.remove('show');
+  }
+}
+
+// ══════════════════════════════════════════════
+//  CERTIFICATE
+// ══════════════════════════════════════════════
+
+function checkCompletion() {
+  const total = allLessons.length;
+  const done = doneSet.size;
+  const banner = document.getElementById('completion-banner');
+  if (done >= total && total > 0) {
+    banner.style.display = 'block';
+    banner.style.animation = 'none';
+    // pulse animation
+    setTimeout(() => { banner.style.animation = ''; }, 10);
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+function openCertModal() {
+  const modal = document.getElementById('cert-modal');
+  // reset to name screen
+  document.getElementById('cert-name-screen').style.display = 'block';
+  document.getElementById('cert-display').style.display = 'none';
+  document.getElementById('cert-name-input').value = '';
+  modal.classList.add('show');
+}
+
+function closeCertModal() {
+  document.getElementById('cert-modal').classList.remove('show');
+}
+
+// close modal on backdrop click
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('cert-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeCertModal();
+  });
+});
+
+function generateCertificate() {
+  const name = document.getElementById('cert-name-input').value.trim();
+  if (!name) {
+    document.getElementById('cert-name-input').style.borderColor = '#dc2626';
+    document.getElementById('cert-name-input').placeholder = '⚠️ من فضلك اكتبي اسمك أولاً';
+    return;
+  }
+  // populate certificate
+  document.getElementById('cert-name-display').textContent = name;
+  document.getElementById('cert-lessons-count').textContent = allLessons.length;
+
+  // date in Arabic
+  const now = new Date();
+  const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  document.getElementById('cert-date-display').innerHTML =
+    `تاريخ الإصدار<br>${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+  // switch screens
+  document.getElementById('cert-name-screen').style.display = 'none';
+  document.getElementById('cert-display').style.display = 'block';
+
+  // confetti 🎉
+  launchConfetti();
+}
+
+function launchConfetti() {
+  const colors = ['#f472b6','#c084fc','#fbbf24','#be185d','#7e22ce','#f9a8d4'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `
+      left: ${Math.random() * 100}vw;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      width: ${6 + Math.random() * 8}px;
+      height: ${10 + Math.random() * 8}px;
+      border-radius: ${Math.random() > .5 ? '50%' : '2px'};
+      animation-duration: ${2 + Math.random() * 3}s;
+      animation-delay: ${Math.random() * 1.5}s;
+    `;
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+}
+
+function printCertificate() {
+  const card = document.getElementById('certificate-card');
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
+    <head>
+      <meta charset="UTF-8">
+      <title>شهادة إتمام الدورة</title>
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+      <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Tajawal',sans-serif; background:#fff8f5; display:flex; align-items:center; justify-content:center; min-height:100vh; padding:20px; }
+        :root {
+          --rose:#f472b6; --rose-light:#fce7f3; --rose-dark:#be185d;
+          --lilac:#c084fc; --lilac-light:#f3e8ff; --lilac-dark:#7e22ce;
+          --gold:#fbbf24; --gold-light:#fef9c3; --dark:#1e0a2e; --muted:#9b7bb0;
+        }
+        ${document.querySelector('style').textContent}
+        @media print {
+          body { background: white; padding: 0; }
+          .cert-bg-top, .cert-bg-bottom { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+      </style>
+    </head>
+    <body>
+      ${card.outerHTML}
+      <script>window.onload = () => { window.print(); window.close(); }<\/script>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+}
+
+// Override markDone to also check completion
+const _origMarkDone = markDone;
+function markDone(idx) {
+  if (doneSet.has(idx)) {
+    doneSet.delete(idx);
+  } else {
+    doneSet.add(idx);
+  }
+  saveDone();
+  updateProgress();
+  const btn = document.getElementById('done-btn-' + idx);
+  if (btn) {
+    btn.classList.toggle('done', doneSet.has(idx));
+    btn.textContent = doneSet.has(idx) ? '✓ تم الإنجاز' : '○ سجّلي كمنجز';
+  }
+  const link = document.querySelector(`.lesson-link[data-idx="${idx}"]`);
+  if (link) link.classList.toggle('done', doneSet.has(idx));
+  // check if all done
+  checkCompletion();
+  // if last lesson just marked done → open cert modal automatically
+  if (doneSet.size === allLessons.length && doneSet.has(idx)) {
+    setTimeout(() => {
+      showHome();
+      setTimeout(openCertModal, 400);
+    }, 600);
+  }
+}
+
+// INIT
+window.addEventListener('DOMContentLoaded', () => {
+  buildSidebar();
+  buildHomeOverview();
+  buildLessons();
+  updateProgress();
+  checkCompletion();
+  // mobile: hide sidebar by default
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.add('hidden');
+  }
+});
+</script>
+</body>
+</html>
